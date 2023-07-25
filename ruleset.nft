@@ -1,0 +1,17 @@
+table ip table-ip-filter {
+	chain chain-forward {
+		type filter hook forward priority filter; policy drop;
+		ip saddr 192.168.124.0/24 counter accept
+		ip saddr 192.168.123.0/24 counter accept
+		ct state established,related counter accept
+		counter
+	}
+}
+table ip table-ip-nat {
+	chain chain-postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip saddr 192.168.124.0/24 oifname "eth0" counter masquerade
+		ip saddr 192.168.123.0/24 oifname "eth0" counter masquerade
+		counter
+	}
+}
