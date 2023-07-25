@@ -31,7 +31,7 @@ MESSAGE_OP_REPLY = 1
 
 When the clients sends a valid message, it will send `(1,0)`, for `(valid, send)`. The server will then mirror the
 message code, change the message op to `reply` and return `(1,1)`, for `(valid, reply)`.
-When the clients sends an invalid message, it will send `(1337,0)`, for `(invalid, send)`. The server will then mirror
+When the client sends an invalid message, it will send `(1337,0)`, for `(invalid, send)`. The server will then mirror
 the message code, change the message op to `reply` and return `(1337,1)`, for `(invalid, reply)`.
 
 ## Lab setup
@@ -51,8 +51,8 @@ Load the [nft ruleset](ruleset.nft):
 nft -f ruleset.nft
 ```
 
-Next, create a python virtual environment and activate it. You must activate it whenever you want to run the client
-or server process:
+Next, create a python virtual environment, activate it and install scapy. You must activate the venv whenever you want
+to run the client or server process:
 ```
 virtualenv scapy
 source scapy/bin/activate
@@ -218,7 +218,7 @@ Received message from ('192.168.124.11', 45864) with op '0' and message code '13
 Sending  message to   ('192.168.124.11', 45864) with op '1' and message code '1337'
 ```
 
-... and a tcpdump in the default namespace reveal that the request gets all the way from the client to the server,
+... and a tcpdump in the default namespace reveal that the request makes it all the way from the client to the server,
 whereas the reply is filtered by nftables:
 ```
 [root@centos9 ~]# tcpdump -nne -i os-red
